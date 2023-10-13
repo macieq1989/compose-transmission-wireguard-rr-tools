@@ -1,6 +1,7 @@
-# compose-transmission-wireguard
+# compose-transmission-wireguard + rr tools
 
 Run Transmission through a WireGuard tunnel with Docker Compose.
+In addition to original version, this branch includes Radarr, Sonarr, Bazarr and Jackett. Also network subnet is preconfigured so please adjust it according to your needs. 
 
 [![GitHub](https://img.shields.io/badge/github-blue?style=flat&color=grey&logo=GitHub)](https://github.com/SebDanielsson/compose-transmission-wireguard)
 [![GitHub stars](https://img.shields.io/github/stars/SebDanielsson/compose-transmission-wireguard?style=flat&color=blue&logo=github)](https://github.com/SebDanielsson/compose-transmission-wireguard/stargazers)

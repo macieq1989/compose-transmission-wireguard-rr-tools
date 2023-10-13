@@ -1,18 +1,30 @@
+networks:
+  wg-network:
+    ipam:
+      config:
+        - subnet: 172.19.0.0/16
 services:
   wireguard:
     image: linuxserver/wireguard:version-v1.0.20210914
     cap_add:
       - NET_ADMIN
       - SYS_MODULE
+    networks:
+      wg-network:
+        ipv4_address: 172.19.0.2
+    ports:
+      - "9091:9091/tcp"
+      - "7878:7878"
+      - "6767:6767"
+      - "8989:8989"
+      - "9117:9117"
     sysctls:
       - net.ipv6.conf.all.disable_ipv6=0
       - net.ipv4.conf.all.src_valid_mark=1
     environment:
       - PUID=1000
       - PGID=1000
-      - TZ=Europe/Stockholm
-    ports:
-      - "9091:9091/tcp"
+      - TZ=Europe/London
     volumes:
       - ./wg0.conf:/config/wg0.conf
       - /lib/modules:/lib/modules
@@ -25,7 +37,7 @@ services:
     environment:
       - PUID=1000
       - PGID=1000
-      - TZ=Europe/Stockholm
+      - TZ=Europe/London
     env_file:
       - ./transmission.env
     volumes:
@@ -33,3 +45,56 @@ services:
       - ./downloads:/downloads
       - ./watch:/watch
     restart: always
+  radarr:
+    container_name: radarr
+    image: ghcr.io/hotio/radarr
+    network_mode: "service:wireguard"
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - UMASK=002
+      - TZ=Europe/London
+    volumes:
+      - ./radarr:/config
+      - ./radarr:/data
+  bazarr:
+    container_name: bazarr
+    image: ghcr.io/hotio/bazarr
+    network_mode: "service:wireguard"
+    depends_on:
+      - wireguard
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - UMASK=002
+      - TZ=Europe/London
+    volumes:
+      - ./bazarr:/config
+      - ./bazarr:/data
+  sonarr:
+    container_name: sonarr
+    image: ghcr.io/hotio/sonarr
+    network_mode: "service:wireguard"
+    depends_on:
+      - wireguard
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - UMASK=002
+      - TZ=Europe/London
+    volumes:
+      - ./sonarr:/config
+      - ./sonarr:/data
+  jackett:
+    container_name: jackett
+    image: ghcr.io/hotio/jackett
+    network_mode: "service:wireguard"
+    depends_on:
+      - wireguard
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - UMASK=002
+      - TZ=Europe/London
+    volumes:
+      - ./jackett:/config
