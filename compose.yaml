@@ -57,6 +57,7 @@ services:
     volumes:
       - ./radarr/config:/config
       - ./radarr/data:/data
+    restart: always
   bazarr:
     container_name: bazarr
     image: lscr.io/linuxserver/bazarr:latest
@@ -71,6 +72,7 @@ services:
     volumes:
       - ./bazarr/config:/config
       - ./bazarr/data:/data
+    restart: always
   sonarr:
     container_name: sonarr
     image: lscr.io/linuxserver/sonarr:latest
@@ -85,6 +87,7 @@ services:
     volumes:
       - ./sonarr/config:/config
       - ./sonarr/data:/data
+    restart: always
   jackett:
     container_name: jackett
     image: lscr.io/linuxserver/jackett:latest
@@ -99,3 +102,4 @@ services:
     volumes:
       - ./jackett/config:/config
       - ./jackett/downloads:/downloads
+    restart: always
