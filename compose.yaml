@@ -17,7 +17,7 @@ services:
       - "7878:7878"
       - "6767:6767"
       - "8989:8989"
-      - "9117:9117"
+      - "9696:9696"
     sysctls:
       - net.ipv6.conf.all.disable_ipv6=0
       - net.ipv4.conf.all.src_valid_mark=1
@@ -88,18 +88,16 @@ services:
       - ./sonarr/config:/config
       - ./sonarr/data:/data
     restart: always
-  jackett:
-    container_name: jackett
-    image: lscr.io/linuxserver/jackett:latest
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr:latest
+    container_name: prowlarr
     network_mode: "service:wireguard"
     depends_on:
       - wireguard
     environment:
       - PUID=1000
       - PGID=1000
-      - UMASK=002
       - TZ=Europe/London
     volumes:
-      - ./jackett/config:/config
-      - ./jackett/downloads:/downloads
+      - ./prowlarr:/config
     restart: always
